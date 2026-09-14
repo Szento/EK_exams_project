@@ -1,0 +1,41 @@
+# --- Maven build output ---
+target/
+*.class
+*.jar
+*.war
+
+# --- Secrets / API keys / local config ---
+# Keep actual keys out of version control. Put real values in these files
+# locally, and commit a checked-in .env.example / application.properties.example
+# with placeholder values instead.
+.env
+.env.*
+*.env
+application-local.properties
+application-secrets.properties
+secrets.properties
+**/apikeys.properties
+**/*apikey*
+**/*secret*
+
+# --- IntelliJ IDEA ---
+.idea/
+*.iml
+*.iws
+out/
+
+# --- VS Code ---
+.vscode/
+*.code-workspace
+
+# --- OS files ---
+.DS_Store
+Thumbs.db
+
+# --- Logs ---
+*.log
+logs/
+
+# --- Test / coverage output ---
+*.exec
+coverage/
