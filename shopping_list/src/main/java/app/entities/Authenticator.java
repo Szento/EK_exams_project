@@ -1,9 +1,33 @@
-package app.model;
+package app.entities;
 
+
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity 
-public class Authenticator[
-    private String _username;
-    private String _Password;
-]
+@Table (name = "authenticator")
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder 
+public class Authenticator{
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(unique = true, nullable = false)
+    private String username;
+    @Column(nullable = false)
+    private String passwordHash;
+    
+    @OneToOne
+    @JoinColumn (name = "user_id", unique = true)
+    private User user;
+}

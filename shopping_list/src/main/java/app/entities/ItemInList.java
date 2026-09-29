@@ -1,13 +1,35 @@
 package app.entities;
 
+
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.time.LocalDate;
 
-import jakarta.persistence.Entity;
+@Entity
+@Table (name = "item_in_list", uniqueConstraints = @UniqueConstraint(columnNames = {"shopping_list_id", "product_id"}))
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder 
+public class ItemInList{
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String notes;
+    private String imagePath;
+    private double pricePerItem;
+    private int quantity;
+    private LocalDate expirationDate;
 
-@Entity 
-public class ItemInList[
-    private String _notes;
-    private String _image;
-    private double _pricePerItem;
+    @ManyToOne
+    @JoinColumn(name = "shopping_list_id")
+    private ShoppingList shoppingList;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
+
     
-]
+}

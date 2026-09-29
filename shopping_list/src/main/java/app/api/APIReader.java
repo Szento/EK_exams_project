@@ -15,21 +15,20 @@ public class APIReader {
 
     private final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
-    public String readAPI(String url, String bearerToken) {
+    public String readAPI(String url) {
         try {
             HttpClient client = HttpClient.newHttpClient();
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(new URI(url))
                     .header("accept", "application/json")
-                    .header("Authorization", "Bearer " + bearerToken)
                     .GET()
                     .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() != 200) {
-                throw new RuntimeException("GET request failed. Status code: " + response.statusCode());
+                throw new RuntimeException("GET request failed. Status code: " + response.statusCode() + " Body: " + response.body());
             }
             return response.body();
         } catch (Exception e) {
@@ -46,9 +45,9 @@ public class APIReader {
         }
     }
 
-    public <T> T getWithJacksonGeneric(String url, String bearerToken, Class<T> tClass) {
+    public <T> T getWithJacksonGeneric(String url, Class<T> tClass) {
         try {
-            String json = readAPI(url, bearerToken);
+            String json = readAPI(url);
             JsonNode node = objectMapper.readTree(json);
             return objectMapper.treeToValue(node, tClass);
         } catch (IOException e) {

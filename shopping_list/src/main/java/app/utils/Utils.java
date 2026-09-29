@@ -1,6 +1,6 @@
 package app.utils;
 
-import app.exceptions.ApiException;
+import app.exceptions.APIException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,10 +17,10 @@ public class Utils {
             if (value != null) {
                 return value.trim();  // Trim whitespace
             } else {
-                throw new ApiException(500, String.format("Property %s not found in %s", propName, resourceName));
+                throw new APIException(500, String.format("Property %s not found in %s", propName, resourceName));
             }
         } catch (IOException ex) {
-            throw new ApiException(500, String.format("Could not read property %s.", propName));
+            throw new APIException(500, String.format("Could not read property %s.", propName));
         }
     }
 }

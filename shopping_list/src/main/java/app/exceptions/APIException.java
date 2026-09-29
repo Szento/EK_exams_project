@@ -7,11 +7,12 @@ public class APIException extends RuntimeException {
     private int code;
     private static final Logger logger = LoggerFactory.getLogger(APIException.class);
 
-    public ApiException(int code, String msg){
+    public APIException(int code, String msg){
         super(msg);
         this.code = code;
         logger.error("ApiException (code={}): {}", code, msg);
     }
+
     public int getCode(){
         return code;
     }
