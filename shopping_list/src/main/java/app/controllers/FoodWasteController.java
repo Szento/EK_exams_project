@@ -7,7 +7,7 @@ import io.javalin.http.Context;
 public class FoodWasteController {
     private final SallingService sallingService;
 
-    public  FoodWasteController(SallingService sallingService){
+    public FoodWasteController(SallingService sallingService){
         this.sallingService = sallingService;
     }
 

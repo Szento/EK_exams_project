@@ -1,15 +1,15 @@
 package app;
 
+import app.routes.Routes;
 import app.api.APIReader;
 import app.config.ApplicationConfig;
 import app.controllers.FoodWasteController;
-import app.dto.foodwaste.StoreClearanceDTO;
 import app.services.SallingService;
 import app.utils.Utils;
 import io.javalin.Javalin;
 
 public class Main {
-    public static void main(String[] args) {
+    static void main(String[] args) {
         /* using ternery operator can we ask if the server has been Deployed and then access
         the api via System.getenv().
         otherwise we access the api by the local value, Utils.getPropertyValue(),
@@ -26,10 +26,9 @@ public class Main {
         APIReader apiReader = new APIReader();
         SallingService foodWasteService = new SallingService(FWAPIKEY, apiReader);
         FoodWasteController foodWasteController = new FoodWasteController(foodWasteService);
+        Routes routes = new Routes(foodWasteController);
 
-        Javalin app = ApplicationConfig.createServer();
-        app.get("/food-waste/{zip}", foodWasteController::getByZip);
-        app.get("/", ctx -> ctx.result("Hello"));
+        Javalin app = ApplicationConfig.createServer(routes.getRoutes());
 
         app.start(8000);
     }
