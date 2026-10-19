@@ -11,13 +11,14 @@
     <properties>
         <maven.compiler.source>26</maven.compiler.source>
         <maven.compiler.target>26</maven.compiler.target>
+        <maven.compiler.proc>full</maven.compiler.proc>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <lombok.version>1.18.42</lombok.version>
         <hibernate-version>7.2.3.Final</hibernate-version>
         <junit.version>6.0.3</junit.version>
         <postgres.version>42.7.7</postgres.version>
         <testcontainers.version>2.0.3</testcontainers.version>
-        <logback-classic>1.5.27</logback-classic>
+        <logback-classic>1.5.7</logback-classic>
         <org.slf4j>2.0.17</org.slf4j>
         <hamcrest>3.0</hamcrest>
         <rest-assured.version>5.5.6</rest-assured.version>

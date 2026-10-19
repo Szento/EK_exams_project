@@ -19,13 +19,13 @@ public class SallingService {
         this.apiReader = apiReader;
     }
 
-    public Object getFoodWasteByZip(String zip){
-        String url = BASE_URL + "/v1/food-waste/{storeId}" + zip;
+    public StoreClearanceDTO[] getFoodWasteByZip(String zip){
+        String url = BASE_URL + "/v1/food-waste/?zip=" + zip;
         logger.debug("Fetching food waste for zip {}", zip);
         return apiReader.getWithJacksonGeneric(url, StoreClearanceDTO[].class, apiKey);
     }
     public ItemDTO getItemByEAN(String ean){
-        String url = BASE_URL + "/v2/products/{ean}" + ean;
+        String url = BASE_URL + "/v2/products/" + ean;
         logger.debug("Fetching product for EAN {}", ean);
         return apiReader.getWithJacksonGeneric(url, ItemDTO.class, apiKey);
     }
