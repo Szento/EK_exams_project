@@ -2,6 +2,7 @@ package app;
 
 import app.api.APIReader;
 import app.config.ApplicationConfig;
+import app.controllers.FoodWasteController;
 import app.dto.foodwaste.StoreClearanceDTO;
 import app.services.SallingService;
 import app.utils.Utils;
@@ -24,19 +25,12 @@ public class Main {
 
         APIReader apiReader = new APIReader();
         SallingService foodWasteService = new SallingService(FWAPIKEY, apiReader);
+        FoodWasteController foodWasteController = new FoodWasteController(foodWasteService);
 
         Javalin app = ApplicationConfig.createServer();
+        app.get("/food-waste/{zip}", foodWasteController::getByZip);
         app.get("/", ctx -> ctx.result("Hello"));
 
-        app.get("/food-waste/{zip}", ctx -> {
-            String zip = ctx.pathParamAsClass("zip", String.class)
-                    .check(value -> value.matches("\\d{4}"), "Zip code must be 4 digits")
-                    .get();
-            StoreClearanceDTO[] stores = foodWasteService.getFoodWasteByZip(zip);
-
-            ctx.header("Cache-Control", "public, max-age=120");
-            ctx.json(stores);
-        });
         app.start(8000);
     }
 }
