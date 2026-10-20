@@ -1,0 +1,17 @@
+### Get all lists
+GET http://localhost:8000/api/shoppinglists
+
+### Get one list
+GET http://localhost:8000/api/shoppinglists/1
+
+### Create a list
+POST http://localhost:8000/api/shoppinglists
+Content-Type: application/json
+
+{"name": "weekend", "overallPrice": 120.5, "userId": 1}
+
+### Create with a missing name (expect 404)
+POST http://localhost:8000/api/shoppinglists
+Content-Type: application/json
+
+{"name": "utility", "overallPrice": 10, "userId": 999}

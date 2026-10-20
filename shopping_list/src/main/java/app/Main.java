@@ -2,6 +2,7 @@ package app;
 
 import app.controllers.ShoppingListController;
 import app.dao.ShoppingListDAOImpl;
+import app.dao.UserDAOImpl;
 import app.routes.Routes;
 import app.api.APIReader;
 import app.config.ApplicationConfig;
@@ -28,7 +29,7 @@ public class Main {
         APIReader apiReader = new APIReader();
         SallingService foodWasteService = new SallingService(FWAPIKEY, apiReader);
         FoodWasteController foodWasteController = new FoodWasteController(foodWasteService);
-        ShoppingListController shoppingListController = new ShoppingListController(new ShoppingListDAOImpl());
+        ShoppingListController shoppingListController = new ShoppingListController(new ShoppingListDAOImpl(), new UserDAOImpl());
         Routes routes = new Routes(foodWasteController, shoppingListController);
 
         Javalin app = ApplicationConfig.createServer(routes.getRoutes());

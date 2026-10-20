@@ -24,6 +24,7 @@ public class Routes {
             path("shoppinglists", () -> {
                 get(shoppingListController::getAll);
                 get("{id}", shoppingListController::getById);
+                post(shoppingListController::create);
             });
         };
 
