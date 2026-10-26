@@ -25,6 +25,8 @@ public class Routes {
                 get(shoppingListController::getAll);
                 get("{id}", shoppingListController::getById);
                 post(shoppingListController::create);
+                put("{id}", shoppingListController::update);
+                delete("{id}", shoppingListController::delete);
             });
         };
 

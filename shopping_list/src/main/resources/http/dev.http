@@ -15,3 +15,12 @@ POST http://localhost:8000/api/shoppinglists
 Content-Type: application/json
 
 {"name": "utility", "overallPrice": 10, "userId": 999}
+
+### Update a list
+PUT http://localhost:8000/api/shoppinglists/1
+Content-Type: application/json
+
+{"name": "Weekday", "overallPrice": 80}
+
+### Delete a list
+DELETE http://localhost:8000/api/shoppinglists/1

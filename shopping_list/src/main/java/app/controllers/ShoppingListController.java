@@ -1,6 +1,7 @@
 package app.controllers;
 
 import app.dao.ShoppingListDAO;
+import app.dao.ShoppingListDAOImpl;
 import app.dao.UserDAO;
 import app.dto.ShoppingListDTO;
 import app.entities.ShoppingList;
@@ -50,5 +51,32 @@ public class ShoppingListController {
         ShoppingList saved = shoppingListDAO.save(list);
 
         ctx.status(201).json(ShoppingListDTO.fromEntity(saved));
+    }
+
+    public void update(Context ctx){
+        Long id = ctx.pathParamAsClass("id", Long.class).get();
+        ShoppingList list = shoppingListDAO.findById(id)
+                .orElseThrow(() -> new APIException(404, "Shopping list with id " + id + " was not found"));
+
+        ShoppingListDTO dto = ctx.bodyValidator(ShoppingListDTO.class)
+                .check(d -> d.name() != null && !d.name().isBlank(), "name is required")
+                .check(d -> d.overallPrice() >= 0, "overallPrice cannot be negative")
+                .get();
+
+        list.setName(dto.name());
+        list.setOverallPrice(dto.overallPrice());
+
+        ShoppingList updated = shoppingListDAO.update(list);
+        ctx.json(ShoppingListDTO.fromEntity(updated));
+    }
+
+    public void delete(Context ctx){
+        Long id = ctx.pathParamAsClass("id", Long.class).get();
+        ShoppingList list = shoppingListDAO.findById(id)
+                .orElseThrow(() -> new APIException(404, "Shopping list with id " + id + " was not found"));
+
+        shoppingListDAO.delete(id);
+
+        ctx.status(204);
     }
 }
