@@ -8,19 +8,66 @@ GET http://localhost:8000/api/shoppinglists/1
 POST http://localhost:8000/api/shoppinglists
 Content-Type: application/json
 
-{"name": "weekend", "overallPrice": 120.5, "userId": 1}
+{
+  "name": "weekend",
+  "overallPrice": 120.5,
+  "userId": 1
+}
 
 ### Create with a missing name (expect 404)
 POST http://localhost:8000/api/shoppinglists
 Content-Type: application/json
 
-{"name": "utility", "overallPrice": 10, "userId": 999}
+{
+  "name": "utility",
+  "overallPrice": 10,
+  "userId": 999
+}
 
 ### Update a list
 PUT http://localhost:8000/api/shoppinglists/1
 Content-Type: application/json
 
-{"name": "Weekday", "overallPrice": 80}
+{
+  "name": "Weekday",
+  "overallPrice": 80
+}
 
 ### Delete a list
 DELETE http://localhost:8000/api/shoppinglists/1
+
+_________
+
+### Invalid zip (expect 400)
+GET http://localhost:8000/api/food-waste/12
+
+### Id is not a number (expect 400)
+GET http://localhost:8000/api/shoppinglist/abc
+
+### Create with missing name (expect 400)
+POST http://localhost:8000/api/shoppinglist
+Content-Type: application/json
+
+{
+  "overallPrice": 50,
+  "userId": 1
+}
+
+### Create with negative price (expect 400)
+POST http://localhost:8000/api/shoppinglist
+Content-Type: application/json
+
+{
+  "name": "Negative",
+  "overallPrice": -5,
+  "userId": 1
+}
+
+### Update with blank name (expect 400)
+PUT http://localhost:8000/api/shoppinglist/1
+Content-Type: application/json
+
+{
+  "name": "",
+  "overallPrice": 50
+}
