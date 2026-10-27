@@ -8,8 +8,13 @@ import java.util.Properties;
 public final class HibernateConfig {
 
     private static volatile EntityManagerFactory emf;
+    private static boolean isTest = false;
 
     private HibernateConfig() {}
+
+    public static void setTest(boolean test){
+        isTest = test;
+    }
 
     public static EntityManagerFactory getEntityManagerFactory() {
         if (emf == null) {
@@ -28,7 +33,9 @@ public final class HibernateConfig {
         // Teaching-friendly default - change to update in production
         props.put("hibernate.hbm2ddl.auto", "create");
 
-        if (System.getenv("DEPLOYED") != null) {
+        if(isTest){
+            setTestProperties(props);
+        } else if (System.getenv("DEPLOYED") != null) {
             setDeployedProperties(props);
         } else {
             setDevProperties(props);
@@ -51,5 +58,13 @@ public final class HibernateConfig {
         props.put("hibernate.connection.url", "jdbc:postgresql://localhost:5432/" + dbName);
         props.put("hibernate.connection.username", username);
         props.put("hibernate.connection.password", password);
+    }
+
+    private static void setTestProperties(Properties props){
+        props.put("hibernate.connection.driver_class", "org.testcontainers.jdbc.ContainerDatabaseDriver");
+        props.put("hibernate.connection.url", "jdbc:tc:postgresql:16.2:///test_db");
+        props.put("hibernate.connection.username", "postgres");
+        props.put("hibernate.connection.password", "postgres");
+        props.put("hibernate.hbm2ddl.auto", "create-drop");
     }
 }
