@@ -48,6 +48,7 @@ public final class HibernateConfig {
         props.setProperty("hibernate.connection.url", System.getenv("CONNECTION_STR") + dbName);
         props.setProperty("hibernate.connection.username", System.getenv("DB_USERNAME"));
         props.setProperty("hibernate.connection.password", System.getenv("DB_PASSWORD"));
+        props.put("hibernate.hbm2ddl.auto", "update");
     }
 
     private static void setDevProperties(Properties props) {
