@@ -1,0 +1,47 @@
+name: GITHUB ACTIONS WORKFLOW
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: shopping_list
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v4
+      -
+        name: Set up JDK 26
+        uses: actions/setup-java@v4
+        with:
+          java-version: '26'
+          distribution: 'temurin'
+      -
+        name: Create config.properties for tests
+        run: |
+          mkdir -p src/test/resources
+          echo "FWAPI_KEY=${{ secrets.FWAPI_KEY }}" > src/test/resources/config.properties
+      -
+        name: Build with Maven
+        run: mvn --batch-mode --update-snapshots package
+      -
+        name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      -
+        name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: ./shopping_list
+          file: ./shopping_list/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/shopping_list_api:latest
