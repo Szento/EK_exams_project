@@ -19,7 +19,7 @@ public class Routes {
     public EndpointGroup getRoutes() {
         return () -> {
             get("/food-waste/{zip}", foodWasteController::getByZip);
-            get("/", ctx -> ctx.result("HEEEYYY, WATCH"));
+            get("/", ctx -> ctx.result("Shopping list API"));
 
             path("shoppinglists", () -> {
                 get(shoppingListController::getAll);
