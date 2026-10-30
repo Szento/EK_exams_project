@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity 
-@Table (name = "users") // "user" er et reserveret ord i Postgres
+@Table (name = "users") // "user" is a reserved word in prostgres
 @Getter @Setter @NoArgsConstructor  @AllArgsConstructor @Builder 
 public class User {
     @Id @GeneratedValue (strategy = GenerationType.IDENTITY)
@@ -22,9 +22,10 @@ public class User {
     private String email;
     private String phoneNumber;
 
-    /*cascade = CascadeType.ALL, betyder at hvis jeg gør noget ved en parent,
-    skal det også gøres ved et child. altså vores parent som er user hvis det slettes,
-    skal alle listerne og login slettes. */
+    /*cascade = CascadeType.ALL, says that if i do something with a parent,
+    then it should also affect the child. The parent (user) gets deleted,
+    then all its lists and its login, should be deleted as well. 
+    */
     @OneToOne (mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Authenticator authenticator;
 

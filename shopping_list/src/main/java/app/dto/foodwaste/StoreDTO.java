@@ -23,7 +23,7 @@ public class StoreDTO {
     @JsonProperty("brand")
     private String brand;
 
-    // [longitude, latitude], as given by the API
+    // longitude and latitude, as given by the API
     @JsonProperty("coordinates")
     private List<Double> coordinates;
 
