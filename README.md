@@ -77,6 +77,131 @@ shopping_list
 
 ---
 
+### Data Model
+
+#### ERD 
+
+* offers 
+* store 
+* product
+* item_in_list
+* shoppinglist
+* users 
+* authenticator
+
+![](image.png)
+
+#### Important Entities
+
+All id's are created by the database with @GeneratedValue(strategy = GenerationType.IDENTITY).
+PostgreSQL assigns the id when a row is inserted, and Hibernate writes the id back into the object. saved.getId() works right after save().
+
+USER:  
+A person using the application. The word user is reserved in PostgreSQL so i use users instead.
+
+Fields:
+ * id
+ * firstName
+ * lastName
+ * email
+ * phoneNumber
+
+Relations:
+ * One user has many shopping lists, @OneToMany
+ * One user has one login, @OneToOne
+ * cascade = CascadeType.ALL, if a user is deleted their lists and login are deleted as well
+
+
+SHOPPINGLIST:  
+A shopping list that a user has.
+
+Fields:
+ * id
+ * name
+ * overallPrice
+ * user
+
+Relations:
+ * Many shopping lists belong to one user, @ManyToOne
+ * One shopping list has many items, @OneToMany
+ * cascade = CascadeType.ALL, if a shopping list is deleted its items are deleted as well
+
+
+ITEMINLIST:  
+One line on a shopping list. It connects a shopping list with a product, and holds extra information like quantity and price.
+
+Fields:
+ * id
+ * quantity
+ * pricePerItem
+ * notes
+ * imagePath
+ * expirationDate
+ * shoppingList
+ * product
+
+Relations:
+ * Many items belong to one shopping list, @ManyToOne
+ * Many items point to one product, @ManyToOne
+ * The same product can only be on a list once, unique constraint on shopping_list_id + product_id (so it can change the quantity instead of keep expanding.)
+
+
+PRODUCT:  
+A product that is sold in a store.
+
+Fields:
+ * id
+ * name
+ * storePrice
+ * store
+
+Relations:
+ * Many products belong to one store, @ManyToOne
+ * A product can be on many shopping lists, through ItemInList
+
+
+STORE:  
+A store that sells products and has offers.
+
+Fields:
+ * id
+ * name
+
+Relations:
+ * One store has many products, @OneToMany
+ * One store has many offers, @OneToMany
+ * cascade = CascadeType.ALL, if a store is deleted its offers are deleted as well
+
+
+OFFERS:  
+A discount in a store.
+
+Fields:
+ * id
+ * offerPrice
+ * percentage
+ * endDate
+ * store
+
+Relations:
+ * Many offers belong to one store, @ManyToOne
+
+
+AUTHENTICATOR:  
+The login information for a user. Planned for security, not used by any endpoint yet.
+
+Fields:
+ * id
+ * username
+ * passwordHash
+ * user
+
+Relations:
+ * One login belongs to one user, @OneToOne
+
+
+---
+
 ### REST API Documentation
 
 ![alt text](image-2.png)
@@ -212,23 +337,23 @@ Main Success Scenario:
 1. User chooses an item 
 2. User sees item description
 3. User adds item to list
-status: ItemInList entity exists, but ther is no endpoint yet.
+Status: ItemInList entity exists, but there is no endpoint yet.
 
 Use Case 2 
 Name: Search for an item.
 Primary actor: User 
 Reason: To see what is the cheapest place to purchase the item.
 Main Success Scenario:
-1. User wants a specifik item
+1. User wants a specific item
 2. User searches for item 
-3. User get the item they searched for from different stores
-status: Will be emplemented with the catalog API
+3. User gets the item they searched for from different stores
+Status: Will be implemented with the catalog API
 
 Use Case 3
 Name: View Weekly Offers
 Primary actor: User
 Reason: To see current discounted products across stores so the user can plan purchases around active offers.
-status: Food waste shows curent clearance offers per store, not weekly offers. 
+Status: Food waste shows current clearance offers per store, not weekly offers. 
 
 Use Case 4
 Name: Remove Item from Shopping List
